@@ -33,7 +33,7 @@ function compose_email() {
 }
 
 // Show email selected from mailbox
-function show_email(id) {
+function show_email(id, original_mailbox) {
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#email-view').style.display = 'block';
 
@@ -72,8 +72,6 @@ function show_email(id) {
       // Reply email
       replyBtn.addEventListener('click', function () {
         compose_email();
-        // Show compose view and hide other views
-
         document.querySelector('#compose-recipients').value = item.sender;
         document.querySelector(
           '#compose-subject'
@@ -85,14 +83,19 @@ function show_email(id) {
 
       // Archive and Unarchive button
       const archiveBtn = document.createElement('button');
-      archiveBtn.classList.add(
-        'btn',
-        'btn-outline-danger',
-        'btn-sm',
-        'archive-btn'
-      );
+      if (original_mailbox === 'sent') {
+        archiveBtn.style.display = 'none';
+      } else {
+        console.log(original_mailbox);
 
-      archiveBtn.innerHTML = item.archived ? 'Unarchive' : 'Archive';
+        archiveBtn.classList.add(
+          'btn',
+          'btn-outline-danger',
+          'btn-sm',
+          'archive-btn'
+        );
+        archiveBtn.innerHTML = item.archived ? 'Unarchive' : 'Archive';
+      }
 
       // Archive email
       archiveBtn.addEventListener('click', function () {
@@ -118,17 +121,18 @@ function show_email(id) {
       email.append(emailBody);
 
       // Change email to read
-      !item.read &&
-        fetch(`/emails/${item.id}`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            read: true,
-          }),
-        });
+
+      fetch(`/emails/${item.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          read: true,
+        }),
+      }).then();
     });
 }
 
 function load_mailbox(mailbox) {
+  console.log(mailbox);
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
@@ -175,7 +179,7 @@ function load_mailbox(mailbox) {
 
         // Open email selected
         emailContainer.addEventListener('click', () => {
-          show_email(item.id);
+          show_email(item.id, mailbox);
         });
       });
     });
@@ -197,7 +201,7 @@ function send_email(event) {
       recipients: recipients,
       subject: subject,
       body: body,
-      read: false,
+      // read: false,
     }),
   })
     // Parse data in JSON format
