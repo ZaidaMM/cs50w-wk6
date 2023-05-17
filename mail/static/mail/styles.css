@@ -1,3 +1,50 @@
 textarea {
-    min-height: 400px;
+  min-height: 400px;
+}
+
+/* Mailbox - email containers */
+.email-container {
+  border: 1px solid grey;
+  border-radius: 3px;
+  padding: 0 10px 0;
+  display: flex;
+  align-items: center;
+  /* text-align: center; */
+  justify-content: space-between;
+}
+
+.email-content {
+  display: flex;
+  align-items: center;
+  padding: 8px 5px;
+}
+.email-sender,
+.email-subject {
+  margin: 0;
+}
+.email-subject {
+  margin-left: 10px;
+}
+
+.email-timestamp {
+  color: grey;
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
+.email-header {
+  line-height: 5px;
+}
+.reply-btn,
+.archive-btn {
+  margin-top: -5px;
+}
+.reply-btn {
+  margin-right: 5px;
+}
+.unread {
+  background-color: white;
+}
+.read {
+  background-color: #e6e6e6;
 }
