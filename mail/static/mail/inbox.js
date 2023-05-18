@@ -73,12 +73,16 @@ function show_email(id, original_mailbox) {
       replyBtn.addEventListener('click', function () {
         compose_email();
         document.querySelector('#compose-recipients').value = item.sender;
-        document.querySelector(
-          '#compose-subject'
-        ).value = `Re: ${item.subject}`;
+        document.querySelector('#compose-subject').value =
+          item.subject.slice(0, 4) !== 'Re: '
+            ? `Re: ${item.subject}`
+            : item.subject;
+        let reply_message_body = `\n \n ________________ \n \n  On ${item.timestamp} ${item.sender} wrote: 
+
+        ${item.body}`;
         document.querySelector(
           '#compose-body'
-        ).value = `\n On ${item.timestamp} ${item.sender} wrote: \n \n ${item.body} \n \n`;
+        ).value = ` ${reply_message_body}`;
       });
 
       // Archive and Unarchive button
@@ -117,7 +121,7 @@ function show_email(id, original_mailbox) {
       emailHeader.appendChild(line);
 
       const emailBody = document.createElement('div');
-      emailBody.innerHTML = item.body;
+      emailBody.innerHTML = `<p>${item.body}</p>`;
       email.append(emailBody);
 
       // Change email to read
@@ -201,12 +205,11 @@ function send_email(event) {
       recipients: recipients,
       subject: subject,
       body: body,
-      // read: false,
     }),
   })
     // Parse data in JSON format
     .then((response) => response.json())
-    .then((result) => {
+    .then(() => {
       load_mailbox('sent');
     });
 }

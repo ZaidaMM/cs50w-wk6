@@ -11,6 +11,7 @@ textarea {
   align-items: center;
   /* text-align: center; */
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .email-content {
