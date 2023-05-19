@@ -121,11 +121,10 @@ function show_email(id, original_mailbox) {
       emailHeader.appendChild(line);
 
       const emailBody = document.createElement('div');
-      emailBody.innerHTML = `<p>${item.body}</p>`;
+      emailBody.innerHTML = item.body;
       email.append(emailBody);
 
       // Change email to read
-
       fetch(`/emails/${item.id}`, {
         method: 'PUT',
         body: JSON.stringify({
