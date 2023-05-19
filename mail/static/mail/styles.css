@@ -1,5 +1,6 @@
 textarea {
-  min-height: 400px;
+  min-height: 300px;
+  margin-bottom: 10px;
 }
 
 /* Mailbox - email containers */
